@@ -168,6 +168,20 @@ describe("Tavily integration", () => {
     expect(s.every((x) => x.corroborates)).toBe(true);
   });
 
+  it("dedupes case-variant URLs and drops search-result pages", () => {
+    const body = "attorneys' fees … tenant";
+    const s = normalizeTavilyResults(
+      [
+        { title: "s20", url: "https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section20", content: body },
+        { title: "s20 dup", url: "https://malegislature.gov/Laws/GeneralLaws/Partii/Titlei/Chapter186/Section20", content: body },
+        { title: "search", url: "https://malegislature.gov/Laws/Search?searchTerms=Landlord", content: body },
+      ],
+      "ma-attorney-fees",
+      "2026-01-01T00:00:00.000Z",
+    );
+    expect(s.map((x) => x.title)).toEqual(["s20"]);
+  });
+
   it("rate-limits per client", () => {
     const rl = new RateLimiter(2, 60_000);
     expect(rl.check("a", 0)).toBe(true);

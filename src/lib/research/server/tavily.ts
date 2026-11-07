@@ -48,6 +48,27 @@ export function isProposedLegislation(url: string): boolean {
   }
 }
 
+/** Search-result listings are not sources (e.g. malegislature.gov/Laws/Search?searchTerms=…). */
+export function isSearchPage(url: string): boolean {
+  try {
+    const u = new URL(url);
+    return /\/search\b/i.test(u.pathname) || u.searchParams.has("searchTerms") || u.searchParams.has("q");
+  } catch {
+    return false;
+  }
+}
+
+/** Dedupe key: malegislature.gov paths are case-insensitive (…/Section15f == …/Section15F). */
+export function canonicalUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    const path = u.hostname.endsWith("malegislature.gov") ? u.pathname.toLowerCase() : u.pathname;
+    return `${u.hostname.toLowerCase()}${path.replace(/\/$/, "")}${u.search}`;
+  } catch {
+    return url;
+  }
+}
+
 const TYPE_RANK: Record<SourceType, number> = { statute: 30, regulation: 20, government_guidance: 10, other: 0 };
 
 export function classifySource(url: string): SourceType {
@@ -113,8 +134,9 @@ export function normalizeTavilyResults(
   const scored: { source: LegalSource; rank: number }[] = [];
   for (const r of results) {
     if (typeof r.url !== "string" || !/^https:\/\//i.test(r.url)) continue;
-    if (seen.has(r.url) || isProposedLegislation(r.url)) continue;
-    seen.add(r.url);
+    const key = canonicalUrl(r.url);
+    if (seen.has(key) || isProposedLegislation(r.url) || isSearchPage(r.url)) continue;
+    seen.add(key);
     const title = typeof r.title === "string" && r.title.trim() ? r.title.trim() : r.url;
     const body =
       typeof r.raw_content === "string" && r.raw_content.length > 0
