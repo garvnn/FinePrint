@@ -5,15 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { CircleCheck, CircleDashed, FilePlus2, Loader2, Printer, RefreshCw, TriangleAlert } from "lucide-react";
 import type { FindingCategory } from "@/types/lease";
 import { useLeaseSession, type LeaseSession } from "@/hooks/use-lease-session";
-import { isSampleId } from "@/lib/fixtures/sample-leases";
+import { isSampleId, SAMPLE_LEASES } from "@/lib/fixtures/sample-leases";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UploadPanel } from "@/components/upload/upload-panel";
+import { UploadScreen } from "@/components/upload/upload-screen";
 import { PdfViewer, type HighlightTarget } from "@/components/lease/pdf-viewer";
 import { TextViewer } from "@/components/lease/text-viewer";
 import { SummaryStrip } from "@/components/financial/summary-strip";
@@ -27,13 +25,16 @@ export function AnalyzeApp() {
   const params = useSearchParams();
   const session = useLeaseSession(params.get("research") === "bundled" ? "bundled" : "live");
   const started = useRef(false);
+  const urlSample = params.get("sample");
+  // File name shown while loading. Chosen files and sample clicks set it; a ?sample= URL implies it.
+  const [chosenName, setFileName] = useState<string | null>(null);
+  const fileName = chosenName ?? (isSampleId(urlSample) ? SAMPLE_LEASES[urlSample].fileName : null);
 
   useEffect(() => {
     if (started.current) return;
     started.current = true;
-    const sample = params.get("sample");
-    if (isSampleId(sample)) void session.openSample(sample, { fixture: params.get("fixture") === "1" });
-  }, [params, session]);
+    if (isSampleId(urlSample)) void session.openSample(urlSample, { fixture: params.get("fixture") === "1" });
+  }, [params, urlSample, session]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -41,17 +42,20 @@ export function AnalyzeApp() {
       <main className="flex-1">
         {session.phase.kind === "ready" && session.analysis && session.document ? (
           <Dashboard session={session} />
-        ) : session.phase.kind === "loading" ? (
-          <LoadingState label={session.phase.label} progress={session.phase.progress} />
-        ) : (
-          <div className="px-4 py-12 sm:py-16">
-            <UploadPanel
-              onFile={(f) => void session.openFile(f)}
-              onSample={(id) => void session.openSample(id)}
-              error={session.phase.kind === "error" ? session.phase.message : null}
-            />
-          </div>
-        )}
+        ) : session.phase.kind !== "ready" ? (
+          <UploadScreen
+            phase={session.phase}
+            fileName={fileName}
+            onFile={(f) => {
+              setFileName(f.name);
+              void session.openFile(f);
+            }}
+            onSample={(id) => {
+              setFileName(SAMPLE_LEASES[id].fileName);
+              void session.openSample(id);
+            }}
+          />
+        ) : null}
       </main>
     </div>
   );
@@ -88,26 +92,6 @@ function AppHeader({ session }: { session: LeaseSession }) {
         )}
       </div>
     </header>
-  );
-}
-
-function LoadingState({ label, progress }: { label: string; progress?: number }) {
-  return (
-    <div className="mx-auto max-w-[96rem] space-y-5 px-4 py-8" aria-busy="true">
-      <div className="mx-auto max-w-md rounded-xl border bg-card p-5 text-center shadow-card">
-        <Loader2 className="mx-auto mb-3 size-6 animate-spin text-primary" />
-        <p className="text-sm font-medium" aria-live="polite">{label}</p>
-        {progress !== undefined && <Progress value={progress * 100} className="mt-3" />}
-        <p className="mt-2 text-xs text-muted-foreground">Everything happens in this tab. Nothing is uploaded.</p>
-      </div>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
-        {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-20 rounded-xl" />)}
-      </div>
-      <div className="grid gap-5 lg:grid-cols-2">
-        <Skeleton className="h-[60vh] rounded-xl" />
-        <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-xl" />)}</div>
-      </div>
-    </div>
   );
 }
 
