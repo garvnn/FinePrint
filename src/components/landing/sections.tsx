@@ -1,63 +1,33 @@
-import Link from "next/link";
-import {
-  ArrowRight,
-  BadgeDollarSign,
-  BookOpenCheck,
-  Building2,
-  Cpu,
-  FileSearch,
-  GraduationCap,
-  Laptop,
-  Lock,
-  Scale,
-  Search,
-  Server,
-  ShieldAlert,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CreditCard, Lock, SearchAlert, type LucideIcon } from "lucide-react";
+import { RESEARCH_ENDPOINT } from "@/lib/research/client";
 
-function SectionHeading({ eyebrow, title, children }: { eyebrow: string; title: string; children?: React.ReactNode }) {
-  return (
-    <div className="mx-auto mb-12 max-w-2xl text-center">
-      <p className="mb-3 text-sm font-medium text-primary">{eyebrow}</p>
-      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{title}</h2>
-      {children && <p className="mt-4 text-pretty text-muted-foreground">{children}</p>}
-    </div>
-  );
-}
-
-const BENEFITS = [
+const BENEFITS: { icon: LucideIcon; title: string; body: string }[] = [
   {
-    icon: BadgeDollarSign,
+    icon: CreditCard,
     title: "Understand your costs",
-    body: "Monthly and annual rent, cash due at signing, recurring fees and penalties, kept separate so a refundable deposit is never counted as a cost. Every formula is shown.",
+    body: "See what’s due at signing, what’s refundable, your first-year total and the charges that only apply if something happens.",
   },
   {
-    icon: ShieldAlert,
+    icon: SearchAlert,
     title: "Spot potential problems",
-    body: "Deposits above one month's rent, extra move-in fees, early late fees, broad repair duties and auto-renewals, each tied to the exact clause and page.",
+    body: "Clauses that appear to conflict with Massachusetts rules are highlighted on the page, with the law that applies and a question to ask.",
   },
   {
     icon: Lock,
     title: "Keep your lease private",
-    body: "Parsing, extraction and math run in your browser. Only generic legal topics like “security deposit limits” are ever sent for research.",
+    body: "Your lease is read in your browser. It isn’t uploaded, stored or sent to an AI service.",
   },
 ];
 
 export function Benefits() {
   return (
-    <section className="mx-auto max-w-page px-4 py-20 sm:px-6">
-      <SectionHeading eyebrow="Why FinePrint" title="A lease review you can actually check">
-        Not a chatbot. Every finding points to the sentence in your lease that triggered it and the legal source it relies on.
-      </SectionHeading>
-      <div className="grid gap-5 md:grid-cols-3">
+    <section className="border-y bg-card">
+      <div className="mx-auto grid max-w-page grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-8 px-4 py-14 sm:px-6">
         {BENEFITS.map((b) => (
-          <div key={b.title} className="rounded-xl border bg-card p-6 shadow-card">
-            <div className="mb-4 flex size-10 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-              <b.icon className="size-5" />
-            </div>
-            <h3 className="mb-2 font-semibold">{b.title}</h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">{b.body}</p>
+          <div key={b.title}>
+            <b.icon aria-hidden="true" className="size-7 text-primary" />
+            <h2 className="mt-3 mb-1.5 text-xl font-semibold">{b.title}</h2>
+            <p className="text-foreground/80">{b.body}</p>
           </div>
         ))}
       </div>
@@ -66,130 +36,95 @@ export function Benefits() {
 }
 
 const STEPS = [
-  { icon: FileSearch, title: "Open your lease PDF", body: "Drop in a text-based PDF. It is read on your device by PDF.js; nothing is uploaded." },
-  { icon: Cpu, title: "FinePrint maps the risks", body: "A deterministic rule engine extracts amounts and clauses, calculates exposure and flags provisions to review." },
-  { icon: BookOpenCheck, title: "Verify with Massachusetts law", body: "Official sources are retrieved for each topic, linked and timestamped. You get questions to ask before you sign." },
+  { title: "Open your lease", body: "Drop in a PDF. FinePrint reads it in your browser tab." },
+  {
+    title: "Check the law",
+    body: "It looks up Massachusetts rules by topic only, like “security deposit limit,” and tells you whether each source is live or bundled.",
+  },
+  { title: "Review and ask", body: "Go through each finding on the page, then copy a letter with your questions for the landlord." },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="scroll-mt-20 border-y bg-card">
-      <div className="mx-auto max-w-page px-4 py-20 sm:px-6">
-        <SectionHeading eyebrow="How it works" title="Three steps, about a minute" />
-        <ol className="grid gap-8 md:grid-cols-3">
-          {STEPS.map((s, i) => (
-            <li key={s.title} className="relative">
-              <div className="mb-4 flex items-center gap-3">
-                <span className="flex size-8 items-center justify-center rounded-full border bg-background text-sm font-semibold tabular-nums">{i + 1}</span>
-                <s.icon className="size-5 text-primary" />
-              </div>
-              <h3 className="mb-2 font-semibold">{s.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">{s.body}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+    <section id="how" className="mx-auto max-w-page scroll-mt-4 px-4 py-16 sm:px-6 md:py-[4.5rem]">
+      <h2 className="mb-8 text-[2rem] leading-tight font-bold tracking-[-0.02em]">How it works</h2>
+      <ol className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-6">
+        {STEPS.map((s, i) => (
+          <li key={s.title} className="rounded-lg border bg-card p-6">
+            <span aria-hidden="true" className="inline-flex size-9 items-center justify-center rounded-full bg-accent font-bold text-primary">
+              {i + 1}
+            </span>
+            <h3 className="mt-3.5 mb-1.5 text-lg font-semibold">
+              <span className="sr-only">Step {i + 1}: </span>
+              {s.title}
+            </h3>
+            <p className="text-foreground/80">{s.body}</p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
+
+/*
+ * The body below is the exact shape requestResearch() sends
+ * (src/lib/research/client.ts). Keep the two in sync.
+ */
+const EXAMPLE_BODY = JSON.stringify({ topicId: "ma-security-deposit-limits", jurisdiction: "MA" }, null, 2);
 
 export function PrivacySection() {
   return (
-    <section id="privacy" className="mx-auto max-w-page scroll-mt-20 px-4 py-20 sm:px-6">
-      <SectionHeading eyebrow="Privacy by architecture" title="Your lease stays on your device. Here's exactly what doesn't.">
-        Privacy isn&apos;t a promise in a policy. The app is built so the server can&apos;t receive your lease: its only
-        endpoint accepts an allowlisted topic ID and rejects everything else.
-      </SectionHeading>
-      <div className="grid items-stretch gap-4 lg:grid-cols-[1fr_auto_1fr]">
-        <div className="rounded-xl border-2 border-success/30 bg-success-soft/40 p-6">
-          <div className="mb-4 flex items-center gap-2 font-semibold">
-            <Laptop className="size-5 text-success" /> Your browser
-          </div>
-          <ul className="space-y-2 text-sm">
-            {["PDF parsing (PDF.js, same-origin worker)", "Clause and amount extraction", "Financial calculations", "Findings, report and landlord letter", "Nothing stored after you close the tab"].map((t) => (
-              <li key={t} className="flex gap-2"><span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-success" />{t}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="flex flex-col items-center justify-center gap-2 px-2 text-center">
-          <ArrowRight className="hidden size-5 text-muted-foreground lg:block" />
-          <code className="rounded-lg border bg-card px-3 py-2 font-mono text-xs leading-relaxed shadow-card">
-            {'{ "topicId": "ma-security-deposit-limits",'}<br />{'  "jurisdiction": "MA" }'}
-          </code>
-          <span className="max-w-[16rem] text-xs text-muted-foreground">The only data that leaves your device: a generic topic ID.</span>
-        </div>
-        <div className="rounded-xl border bg-card p-6">
-          <div className="mb-4 flex items-center gap-2 font-semibold">
-            <Server className="size-5 text-muted-foreground" /> FinePrint server → Tavily
-          </div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {["Validates topic against an allowlist", "Builds the search query itself", "Searches official MA sources first", "Never receives lease text, names or addresses", "Logs only the topic ID and status"].map((t) => (
-              <li key={t} className="flex gap-2"><span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/60" />{t}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        Every outgoing request is listed in the in-app Privacy Audit, with its exact payload.
-      </p>
-    </section>
-  );
-}
-
-export function RentersSection() {
-  return (
-    <section id="renters" className="scroll-mt-20 border-t bg-card">
-      <div className="mx-auto grid max-w-page gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2">
-        <div>
-          <p className="mb-3 text-sm font-medium text-primary">Who it&apos;s for</p>
-          <h2 className="text-3xl font-semibold tracking-tight text-balance">Built for first-time renters, starting with Massachusetts students</h2>
-          <p className="mt-4 text-muted-foreground">
-            Students and young renters often sign their first lease under time pressure, with thousands of dollars due up front and
-            no one to review the terms. FinePrint turns a dense contract into the numbers, the risks and the questions to ask, with
-            evidence they can show a landlord.
+    <section id="privacy" className="scroll-mt-4 bg-foreground text-background">
+      <div className="mx-auto flex max-w-page flex-wrap items-center gap-10 px-4 py-16 sm:px-6 md:py-[4.5rem]">
+        <div className="min-w-0 flex-[1_1_380px]">
+          <h2 className="mb-3 text-[2rem] leading-tight font-bold tracking-[-0.02em]">This is all that leaves your device</h2>
+          <p className="mb-3 text-[1.0625rem] text-background/80">
+            To check Massachusetts law, FinePrint sends a topic name and a state. Never your lease text, your name or your address.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg" className="h-11 px-5">
-              <Link href="/analyze?sample=sample-a">See the problematic sample</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="h-11 px-5">
-              <Link href="/analyze?sample=sample-b">Compare a cleaner lease</Link>
-            </Button>
-          </div>
+          <p className="text-[1.0625rem] text-background/80">
+            The Privacy tab shows every request, its exact body and the result of the privacy check, so you don’t have to take our
+            word for it.
+          </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {[
-            { icon: GraduationCap, title: "Customer", body: "First-time renters; initial focus on Massachusetts college students." },
-            { icon: Search, title: "Differentiation", body: "Clause-level evidence and verifiable official sources, with no document upload." },
-            { icon: Building2, title: "Distribution (hypothesis)", body: "Universities, off-campus housing offices and tenant organizations licensing it for their communities." },
-            { icon: Scale, title: "Business model (hypothesis)", body: "One-time reports for individuals, institutional licenses, and new jurisdictions over time. Pricing not yet validated." },
-          ].map((c) => (
-            <div key={c.title} className="rounded-xl border bg-background p-5">
-              <c.icon className="mb-3 size-5 text-primary" />
-              <h3 className="mb-1 text-sm font-semibold">{c.title}</h3>
-              <p className="text-sm text-muted-foreground">{c.body}</p>
-            </div>
-          ))}
+        <div className="min-w-0 flex-[1_1_380px]">
+          <p className="mb-2 text-sm text-background/70">An actual research request</p>
+          <pre className="rounded-lg border border-background/15 bg-background/10 p-5 font-mono text-[0.9375rem] leading-relaxed break-words whitespace-pre-wrap">
+            {`POST ${RESEARCH_ENDPOINT}\n${EXAMPLE_BODY}`}
+          </pre>
         </div>
       </div>
     </section>
   );
 }
 
-export function FinalCta() {
+const AUDIENCES = [
+  {
+    title: "Renters",
+    body: "First-time renters and students in Massachusetts who want to understand a lease before signing it.",
+    hypothesis: "free for students, with a one-time report for other renters.",
+  },
+  {
+    title: "Organizations",
+    body: "University housing offices, tenant support groups and relocation services that help people find housing.",
+    hypothesis: "organizations license FinePrint for the people they support.",
+  },
+];
+
+export function WhoItsFor() {
   return (
-    <section className="mx-auto max-w-page px-4 py-20 sm:px-6">
-      <div className="rounded-2xl bg-primary px-6 py-12 text-center text-primary-foreground sm:px-12">
-        <h2 className="text-3xl font-semibold tracking-tight">Read the fine print before it costs you.</h2>
-        <p className="mx-auto mt-3 max-w-xl text-primary-foreground/80">No account, no upload. Open a lease and see what you&apos;re agreeing to.</p>
-        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button asChild size="lg" variant="secondary" className="h-11 px-5">
-            <Link href="/analyze">Upload lease</Link>
-          </Button>
-          <Button asChild size="lg" variant="ghost" className="h-11 px-5 text-primary-foreground hover:bg-white/10 hover:text-primary-foreground">
-            <Link href="/analyze?sample=sample-a">Try sample lease</Link>
-          </Button>
-        </div>
+    <section id="who" className="mx-auto max-w-page scroll-mt-4 px-4 py-16 sm:px-6 md:py-[4.5rem]">
+      <h2 className="mb-2 text-[2rem] leading-tight font-bold tracking-[-0.02em]">Who it’s for</h2>
+      <p className="mb-8 text-muted-foreground">Pricing below is a hypothesis we’re testing, not a final offer.</p>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6">
+        {AUDIENCES.map((a) => (
+          <div key={a.title} className="rounded-lg border bg-card p-6 sm:p-7">
+            <h3 className="mb-2 text-[1.375rem] font-semibold">{a.title}</h3>
+            <p className="mb-4 text-foreground/80">{a.body}</p>
+            <p className="rounded-md bg-warning-soft px-3.5 py-3 text-sm text-warning">
+              <strong>Hypothesis:</strong> {a.hypothesis}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );

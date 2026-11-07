@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Hero } from "@/components/landing/hero";
-import { Benefits, FinalCta, HowItWorks, PrivacySection, RentersSection } from "@/components/landing/sections";
+import { Benefits, HowItWorks, PrivacySection, WhoItsFor } from "@/components/landing/sections";
 
 export default function HomePage() {
   return (
@@ -12,8 +12,7 @@ export default function HomePage() {
         <Benefits />
         <HowItWorks />
         <PrivacySection />
-        <RentersSection />
-        <FinalCta />
+        <WhoItsFor />
       </main>
       <SiteFooter />
     </>
