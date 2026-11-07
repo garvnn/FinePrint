@@ -3,7 +3,7 @@
 import type { LeaseFinding, ResearchTopicId } from "@/types/lease";
 import type { ResearchMode, TopicResearch } from "@/hooks/use-lease-session";
 import { getTopic } from "@/lib/research/topics";
-import { Disclaimer, Panel, PriorityPill } from "./bits";
+import { Disclaimer, FindingNumber, Panel, PriorityPill } from "./bits";
 import { pageLabel } from "./finding-card";
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 }
 
 function topicState(r: TopicResearch | undefined, mode: ResearchMode): { text: string; className: string } {
-  if (!r || r.status === "loading") return { text: "Checking…", className: "text-priority-low" };
+  if (!r || r.status === "loading") return { text: "Checking…", className: "text-ring" };
   const found = (r.effective?.sources.length ?? 0) > 0;
   if (!found) return { text: "No source found", className: "text-priority-info" };
   if (!r.usedFallback) return { text: "Live source found", className: "text-success" };
@@ -45,8 +45,9 @@ export function OverviewTab({ findings, topics, research, researchMode, onOpenFi
                 <button
                   type="button"
                   onClick={() => onOpenFinding(f.id)}
-                  className="flex min-h-13 w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border bg-card px-3 py-2 text-left transition-colors hover:border-primary/50 hover:bg-accent/40"
+                  className="flex min-h-13 w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-border bg-card px-3 py-2 text-left transition-colors hover:border-foreground hover:bg-muted"
                 >
+                  <FindingNumber n={findings.indexOf(f) + 1} priority={f.priority} />
                   <PriorityPill priority={f.priority} />
                   <span className="min-w-0 flex-1 font-semibold">{f.title}</span>
                   <span className="text-sm text-muted-foreground">{pageLabel(f)}</span>

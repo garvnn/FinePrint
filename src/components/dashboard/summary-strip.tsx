@@ -11,9 +11,9 @@ export function earlyTerminationCharge(analysis: AnalysisResult): ConditionalCha
 
 function Stat({ label, value, sub, mono, alert }: { label: string; value: string; sub: string; mono?: boolean; alert?: boolean }) {
   return (
-    <div className="min-w-0 rounded-lg border bg-card px-4 py-3.5">
+    <div className="min-w-0 rounded-lg bg-card px-4 py-3">
       <p className="text-[0.8125rem] text-muted-foreground">{label}</p>
-      <p className="mt-0.5 text-2xl font-semibold tabular-nums">{value}</p>
+      <p className="mt-0.5 text-[1.375rem] font-semibold tabular-nums">{value}</p>
       <p
         className={cn(
           "mt-0.5 text-[0.8125rem]",

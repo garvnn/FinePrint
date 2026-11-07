@@ -17,10 +17,22 @@ export const PRIORITY_FILTER_LABEL: Record<FindingPriority, string> = {
 };
 
 export const PRIORITY_CLASS: Record<FindingPriority, { badge: string; soft: string; dot: string; border: string }> = {
-  high: { badge: "bg-priority-high-soft text-priority-high", soft: "bg-priority-high-soft", dot: "bg-priority-high", border: "border-priority-high/30" },
-  medium: { badge: "bg-priority-medium-soft text-priority-medium", soft: "bg-priority-medium-soft", dot: "bg-priority-medium", border: "border-priority-medium/30" },
-  low: { badge: "bg-priority-low-soft text-priority-low", soft: "bg-priority-low-soft", dot: "bg-priority-low", border: "border-priority-low/25" },
-  info: { badge: "bg-priority-info-soft text-priority-info", soft: "bg-priority-info-soft", dot: "bg-priority-info", border: "border-border" },
+  high: { badge: "bg-priority-high-soft text-foreground", soft: "bg-priority-high-soft", dot: "bg-priority-high", border: "border-priority-high/30" },
+  medium: { badge: "bg-priority-medium-soft text-foreground", soft: "bg-priority-medium-soft", dot: "bg-priority-medium", border: "border-priority-medium/30" },
+  low: { badge: "bg-priority-low-soft text-foreground", soft: "bg-priority-low-soft", dot: "bg-priority-low", border: "border-priority-low/25" },
+  info: { badge: "bg-priority-info-soft text-foreground", soft: "bg-priority-info-soft", dot: "bg-priority-info", border: "border-border" },
+};
+
+/**
+ * Highlighter colour per priority, as a CSS value for the --highlight variable.
+ * Marks keep the bg-highlight class and set --highlight inline, so the
+ * fallback yellow applies if this is ever missing.
+ */
+export const PRIORITY_HIGHLIGHT: Record<FindingPriority, string> = {
+  high: "var(--priority-high-soft)",
+  medium: "var(--priority-medium-soft)",
+  low: "var(--priority-low-soft)",
+  info: "var(--priority-info-soft)",
 };
 
 export const CATEGORY_LABEL: Record<FindingCategory, string> = {
@@ -63,7 +75,7 @@ export const VERIFICATION_SHORT_LABEL: Record<VerificationStatus, string | null>
 
 export const VERIFICATION_CLASS: Record<VerificationStatus, string> = {
   not_applicable: "bg-priority-info-soft text-priority-info",
-  pending: "bg-priority-low-soft text-priority-low",
+  pending: "bg-priority-medium-soft text-priority-medium",
   corroborated: "bg-success-soft text-success",
   not_corroborated: "bg-warning-soft text-warning",
   unavailable: "bg-priority-info-soft text-priority-info",

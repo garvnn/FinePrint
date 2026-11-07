@@ -12,9 +12,9 @@ type Tone = "live" | "loading" | "fallback" | "off";
 
 const TONE: Record<Tone, string> = {
   live: "border-success/30 bg-success-soft text-success",
-  loading: "border-priority-low/30 bg-accent text-priority-low",
+  loading: "border-ring/30 bg-accent text-ring",
   fallback: "border-warning/30 bg-warning-soft text-warning",
-  off: "border-priority-info/20 bg-priority-info-soft text-foreground/80",
+  off: "border-transparent bg-card text-foreground",
 };
 
 const BUNDLED = "Showing bundled references, not live.";
@@ -79,7 +79,7 @@ export function ResearchBanner({
           <Button
             variant="outline"
             onClick={session.retryResearch}
-            className="h-9 border-warning/60 bg-card px-3.5 font-semibold text-warning hover:bg-card/80 hover:text-warning"
+            className="h-9 border-foreground bg-card px-3.5 font-semibold text-foreground hover:bg-muted hover:text-foreground"
           >
             <RefreshCw data-icon="inline-start" aria-hidden="true" />
             Retry live search

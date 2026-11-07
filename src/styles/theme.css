@@ -5,56 +5,60 @@
  * (bg-background, text-muted-foreground, bg-priority-high-soft, ...), so
  * replacing this file re-themes everything. See DESIGN.md.
  *
- * Values follow the UI refresh mockups (docs/ui-handoff); the hex value each
- * one was matched to is noted beside it.
+ * Look: "a friend marked up your lease with highlighters". The priority soft
+ * colours are the highlighter inks. The hex each value was matched to is noted
+ * beside it. Every text/background pair in use is at least 4.5:1.
+ *
+ * --highlight is the fallback mark colour. Each lease mark sets --highlight to
+ * its finding's highlighter (PRIORITY_HIGHLIGHT in components/findings/labels.ts).
  */
 :root {
   /* Surfaces */
-  --background: oklch(0.979 0.003 264.5);       /* #F7F8FA page */
-  --foreground: oklch(0.241 0.063 263.1);       /* #0F1E3D deep navy ink */
-  --card: oklch(1 0 0);                          /* #FFFFFF */
+  --background: oklch(0.942 0.009 258.3);        /* #E8ECF2 cool grey-blue desk */
+  --foreground: oklch(0.289 0.062 263.9);        /* #1B2A4A dark ink blue */
+  --card: oklch(1 0 0);                           /* #FFFFFF */
   --card-foreground: var(--foreground);
   --popover: oklch(1 0 0);
   --popover-foreground: var(--foreground);
-  --muted: oklch(0.966 0.005 258.3);             /* #F2F4F7 neutral fill */
-  --muted-foreground: oklch(0.459 0.043 262.5);  /* #4B5870 secondary text */
-  --border: oklch(0.911 0.012 259.8);            /* #DDE2EA */
-  --input: oklch(0.843 0.019 258.4);             /* #C4CCD8 form field border */
+  --muted: oklch(0.97 0.006 264.5);               /* #F3F5F9 quiet fill */
+  --muted-foreground: oklch(0.459 0.046 262.6);   /* #4A5872 */
+  --border: oklch(0.867 0.019 258.4);             /* #CCD4E0 */
+  --input: oklch(0.664 0.036 261);                /* #8794AA form field border, 3:1 on white */
 
-  /* Brand: one accent color (deep blue) */
-  --primary: oklch(0.424 0.181 265.6);           /* #1E40AF */
+  /* Ink: buttons are dark ink; links and focus are a brighter ink blue */
+  --primary: oklch(0.289 0.062 263.9);            /* #1B2A4A */
   --primary-foreground: oklch(1 0 0);
-  --accent: oklch(0.967 0.016 266.3);            /* #EFF4FF light blue fill */
-  --accent-foreground: var(--primary);
-  --secondary: oklch(0.966 0.005 258.3);
+  --accent: oklch(0.96 0.012 264.5);              /* #EEF2FA light ink-blue fill */
+  --accent-foreground: var(--ring);
+  --secondary: oklch(0.97 0.006 264.5);
   --secondary-foreground: var(--foreground);
-  --ring: var(--primary);
-  --destructive: oklch(0.5 0.182 29.5);
+  --ring: oklch(0.425 0.152 264.6);               /* #2346A0 focus ring and links */
+  --destructive: oklch(0.426 0.148 28.7);
 
-  /* Finding priorities (text colour on its soft background) */
-  --priority-high: oklch(0.5 0.182 29.5);        /* #B42318 */
-  --priority-high-soft: oklch(0.939 0.029 23);   /* #FEE4E2 */
-  --priority-medium: oklch(0.539 0.156 43);      /* #B54708 */
-  --priority-medium-soft: oklch(0.956 0.055 91.4); /* #FEF0C7 */
-  --priority-low: oklch(0.509 0.195 260.9);      /* #175CD3 */
-  --priority-low-soft: oklch(0.923 0.039 245.9); /* #D1E9FF */
-  --priority-info: oklch(0.442 0.035 257.8);     /* #475467 */
-  --priority-info-soft: oklch(0.943 0.006 264.5); /* #EAECF0 */
+  /* Finding priorities: -soft is the highlighter, the plain value is text on it */
+  --priority-high: oklch(0.426 0.148 28.7);       /* #8E1F18 */
+  --priority-high-soft: oklch(0.826 0.11 354);    /* #FFA8CB pink highlighter */
+  --priority-medium: oklch(0.426 0.112 254.2);    /* #1B4F8A */
+  --priority-medium-soft: oklch(0.876 0.064 247.1); /* #B5DBFF blue highlighter */
+  --priority-low: oklch(0.454 0.093 89.3);        /* #6B5300 */
+  --priority-low-soft: oklch(0.917 0.155 98);     /* #FFE45C yellow highlighter */
+  --priority-info: oklch(0.459 0.046 262.6);      /* #4A5872 */
+  --priority-info-soft: oklch(0.923 0.012 259.8); /* #E1E6EE */
 
   /* Status */
-  --success: oklch(0.499 0.117 157.1);           /* #067647 */
-  --success-soft: oklch(0.958 0.041 156.4);      /* #DCFAE6 */
-  --warning: oklch(0.462 0.134 40.9);            /* #93370D */
-  --warning-soft: oklch(0.956 0.055 91.4);       /* #FEF0C7 */
+  --success: oklch(0.422 0.084 156.4);            /* #1D5B3A */
+  --success-soft: oklch(0.947 0.021 156.8);       /* #E3F2E8 */
+  --warning: oklch(0.462 0.134 40.9);             /* #93370D */
+  --warning-soft: oklch(0.956 0.055 91.4);        /* #FEF0C7 */
 
-  /* Evidence highlight drawn over the PDF and in excerpts */
-  --highlight: oklch(0.861 0.173 91.9 / 0.38);  /* rgba(250, 204, 21, .38) */
+  /* Fallback evidence highlight (yellow); marks override it per priority */
+  --highlight: oklch(0.861 0.173 91.9 / 0.38);   /* rgba(250, 204, 21, .38) */
   --highlight-border: oklch(0.681 0.142 75.8);   /* #CA8A04 */
 
   /* Shape & depth */
-  --radius: 0.625rem;
-  --shadow-card: 0 1px 3px oklch(0.241 0.063 263.1 / 0.12);
-  --shadow-raised: 0 1px 3px oklch(0.241 0.063 263.1 / 0.08), 0 16px 40px oklch(0.241 0.063 263.1 / 0.1);
+  --radius: 0.5rem;                               /* 8px buttons and cards */
+  --shadow-card: 0 1px 2px oklch(0.289 0.062 263.9 / 0.06), 0 6px 18px oklch(0.289 0.062 263.9 / 0.08);
+  --shadow-raised: 0 1px 3px oklch(0.289 0.062 263.9 / 0.08), 0 16px 40px oklch(0.289 0.062 263.9 / 0.12);
 
   /* Layout */
   --container-max: 76rem;
@@ -76,7 +80,7 @@
   --sidebar-ring: var(--ring);
 }
 
-/* Visible keyboard focus everywhere: 3px primary ring, 2px offset. */
+/* Visible keyboard focus everywhere: 3px ring, 2px offset. */
 :focus-visible {
   outline: 3px solid var(--ring);
   outline-offset: 2px;

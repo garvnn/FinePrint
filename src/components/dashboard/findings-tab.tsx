@@ -4,7 +4,7 @@ import type { FindingCategory, FindingPriority, LeaseDocument, LeaseFinding } fr
 import { CATEGORY_LABEL, PRIORITY_FILTER_LABEL } from "@/components/findings/labels";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Disclaimer } from "./bits";
+import { Disclaimer, OUTLINE_BUTTON } from "./bits";
 import { FindingCard } from "./finding-card";
 
 export type PriorityFilter = FindingPriority | "all";
@@ -32,7 +32,7 @@ export function FindingsTab(props: Props) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-end gap-3 rounded-lg border bg-card px-4 py-3.5">
+      <div className="flex flex-wrap items-end gap-3 rounded-lg bg-card px-4 py-3.5 shadow-card">
         <div>
           <p id="priority-filter-label" className="mb-1.5 text-[0.8125rem] font-semibold text-muted-foreground">
             Priority
@@ -48,7 +48,7 @@ export function FindingsTab(props: Props) {
                   onClick={() => props.onPriorityChange(p)}
                   className={cn(
                     "min-h-10 rounded-full border px-3.5 text-[0.8125rem] font-semibold transition-colors",
-                    on ? "border-primary bg-primary text-primary-foreground" : "bg-card text-foreground hover:bg-muted",
+                    on ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-muted",
                   )}
                 >
                   {p === "all" ? "All" : PRIORITY_FILTER_LABEL[p]}
@@ -65,7 +65,7 @@ export function FindingsTab(props: Props) {
             id="category-filter"
             value={category}
             onChange={(e) => props.onCategoryChange(e.target.value as CategoryFilter)}
-            className="min-h-10 rounded-md border bg-card px-3 text-sm"
+            className="min-h-10 rounded-md border border-input bg-card px-3 text-sm"
           >
             <option value="all">All categories</option>
             {categories.map((c) => (
@@ -80,12 +80,12 @@ export function FindingsTab(props: Props) {
       <Disclaimer boxed />
 
       {visible.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-input bg-card p-6 text-center">
+        <div className="rounded-lg border border-dashed border-input bg-card/60 p-6 text-center">
           <p className="mb-2.5">{findings.length ? "No findings match these filters." : "FinePrint found nothing to flag in the clauses it checks."}</p>
           {findings.length > 0 && (
             <Button
               variant="outline"
-              className="h-10 border-primary bg-card px-3.5 font-semibold text-primary hover:text-primary"
+              className={`h-10 px-3.5 font-semibold ${OUTLINE_BUTTON}`}
               onClick={() => {
                 props.onPriorityChange("all");
                 props.onCategoryChange("all");
@@ -100,6 +100,7 @@ export function FindingsTab(props: Props) {
           <FindingCard
             key={f.id}
             finding={f}
+            number={findings.indexOf(f) + 1}
             document={props.document}
             expanded={props.expandedId === f.id}
             selected={props.selectedId === f.id}

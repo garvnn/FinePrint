@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 /** The FinePrint wordmark. Links home unless `href` is null. */
 export function Logo({ href = "/", className }: { href?: string | null; className?: string }) {
-  const cls = cn("text-xl font-bold tracking-[-0.02em] text-foreground", className);
+  const cls = cn("font-[family-name:var(--font-serif)] text-[1.625rem] leading-none font-semibold tracking-[-0.01em] text-foreground", className);
   if (href === null) return <span className={cls}>FinePrint</span>;
   return (
     <Link href={href} className={cn(cls, "rounded-md no-underline")}>

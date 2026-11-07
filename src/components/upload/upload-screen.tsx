@@ -25,7 +25,7 @@ const SAMPLES: { id: SampleId; title: string; body: string }[] = [
 export function UploadScreen({ phase, fileName, onFile, onSample }: Props) {
   return (
     <div className="mx-auto w-full max-w-[45rem] px-4 pt-14 pb-16 sm:px-6">
-      <h1 className="mb-2 text-4xl font-bold tracking-[-0.025em]">Open your lease</h1>
+      <h1 className="mb-2 font-[family-name:var(--font-serif)] text-4xl font-semibold tracking-[-0.01em]">Open your lease</h1>
       <p className="mb-6 text-foreground/80">FinePrint reads it here in your browser. Nothing is uploaded.</p>
 
       {phase.kind === "error" && (
@@ -56,7 +56,7 @@ export function UploadScreen({ phase, fileName, onFile, onSample }: Props) {
                   key={s.id}
                   type="button"
                   onClick={() => onSample(s.id)}
-                  className="rounded-lg border bg-card px-[1.125rem] py-4 text-left transition-colors hover:border-primary/50 hover:bg-accent/50"
+                  className="rounded-lg border border-transparent bg-card px-[1.125rem] py-4 text-left shadow-card transition-colors hover:border-foreground"
                 >
                   <span className="block font-semibold">{s.title}</span>
                   <span className="mt-0.5 block text-sm text-muted-foreground">{s.body}</span>
@@ -124,7 +124,7 @@ function DropZone({ onFile }: { onFile: (file: File) => void }) {
 
 function LoadingCard({ label, progress, fileName }: { label: string; progress?: number; fileName: string | null }) {
   return (
-    <div className="rounded-lg border bg-card p-6 sm:p-8" aria-busy="true">
+    <div className="rounded-lg bg-card p-6 shadow-card sm:p-8" aria-busy="true">
       {fileName && <p className="mb-1 truncate text-sm text-muted-foreground">{fileName}</p>}
       <p className="mb-4 text-xl font-semibold" aria-live="polite">
         {label}

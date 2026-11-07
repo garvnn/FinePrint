@@ -7,7 +7,7 @@ import { formatUSD } from "@/lib/analysis/money";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Panel, Pill } from "./bits";
+import { OUTLINE_BUTTON, Panel, Pill } from "./bits";
 import { earlyTerminationCharge } from "./summary-strip";
 
 function RefundPill({ refundable }: { refundable: boolean | null }) {
@@ -39,17 +39,18 @@ export function CostsTab({
           <>
             <ul>
               {f.upfront.lines.map((l: MoneyLine, i) => (
-                <li key={i} className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t py-2.5">
+                <li key={i} className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-dashed border-input py-2.5">
                   <span className="flex-[1_1_160px]">{l.label}</span>
                   <RefundPill refundable={l.refundable} />
-                  <span className="min-w-20 text-right font-semibold tabular-nums">{formatUSD(l.amount)}</span>
+                  <span className="min-w-20 text-right font-medium tabular-nums">{formatUSD(l.amount)}</span>
                 </li>
               ))}
             </ul>
-            <div className="flex justify-between gap-3 border-t-2 border-foreground pt-3 font-bold">
+            <div className="flex justify-between gap-3 border-t border-dashed border-input pt-3 pb-2 text-lg font-bold">
               <span>Total due at signing</span>
               <span className="tabular-nums">{formatUSD(f.upfront.total)}</span>
             </div>
+            <div aria-hidden="true" className="border-t-2 border-foreground" />
             {f.upfront.refundable > 0 && (
               <p className="mt-1.5 text-sm text-muted-foreground">
                 Includes the {formatUSD(f.upfront.refundable)} refundable deposit, which isn’t counted as a cost.
@@ -73,7 +74,7 @@ export function CostsTab({
             {f.conditional.map((c, i) => {
               const isEtf = c === etf;
               return (
-                <li key={i} className="border-t py-2.5">
+                <li key={i} className="border-t border-dashed border-input py-2.5">
                   <div className="flex flex-wrap justify-between gap-2 font-semibold">
                     <span>{c.label}</span>
                     <span className="tabular-nums">{c.amount !== null ? formatUSD(c.amount) : "Not stated"}</span>
@@ -93,7 +94,7 @@ export function CostsTab({
         {f.unknowns.length === 0 ? (
           <p className="text-sm text-muted-foreground">Nothing FinePrint checks for was left unstated.</p>
         ) : (
-          <ul className="list-disc space-y-1 pl-5">
+          <ul className="list-disc space-y-1.5 pl-5">
             {f.unknowns.map((u, i) => (
               <li key={i}>{u}</li>
             ))}
@@ -173,7 +174,7 @@ function CorrectNumbers({
             Recalculate
           </Button>
           {Object.keys(overrides).length > 0 && (
-            <Button type="button" variant="outline" className="h-10 bg-card px-4" onClick={() => onChange({})}>
+            <Button type="button" variant="outline" className={`h-10 px-4 font-semibold ${OUTLINE_BUTTON}`} onClick={() => onChange({})}>
               <RotateCcw data-icon="inline-start" aria-hidden="true" />
               Reset to values from the lease
             </Button>

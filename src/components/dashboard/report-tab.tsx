@@ -10,7 +10,7 @@ import { useAuditEvents } from "@/hooks/use-audit";
 import { PRIORITY_LABEL } from "@/components/findings/labels";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { DISCLAIMER } from "./bits";
+import { DISCLAIMER, OUTLINE_BUTTON, SERIF } from "./bits";
 import { pageLabel } from "./finding-card";
 import { earlyTerminationCharge } from "./summary-strip";
 
@@ -62,8 +62,8 @@ export function ReportTab({ analysis, findings, letter, onLetterChange }: Props)
         </Button>
       </div>
 
-      <article data-print-area className="rounded-lg border bg-card p-6">
-        <h2 className="mb-1 text-[1.375rem] font-bold">Before You Sign: Lease Report</h2>
+      <article data-print-area className="rounded-lg bg-card p-6 shadow-card">
+        <h2 className={`mb-1 text-[1.625rem] font-semibold ${SERIF}`}>Before You Sign: Lease Report</h2>
         <p className="mb-4 text-sm text-muted-foreground">
           {doc.fileName}. Massachusetts residential lease, {doc.pageCount} page{doc.pageCount === 1 ? "" : "s"}. Generated on this device.
         </p>
@@ -126,7 +126,7 @@ export function ReportTab({ analysis, findings, letter, onLetterChange }: Props)
         <p className="rounded-md bg-priority-info-soft px-3.5 py-2.5 text-[0.8125rem] text-foreground/80">{DISCLAIMER}</p>
       </article>
 
-      <section data-print-hide aria-labelledby="letter-heading" className="rounded-lg border bg-card px-5 py-[1.125rem]">
+      <section data-print-hide aria-labelledby="letter-heading" className="rounded-lg bg-card px-5 py-[1.125rem] shadow-card">
         <h2 id="letter-heading" className="mb-1 text-lg font-bold">
           Letter to your landlord
         </h2>
@@ -144,7 +144,7 @@ export function ReportTab({ analysis, findings, letter, onLetterChange }: Props)
         <Button
           variant="outline"
           onClick={copy}
-          className="mt-2.5 h-11 border-primary bg-card px-4 font-semibold text-primary hover:text-primary"
+          className={`mt-2.5 h-11 px-4 font-semibold ${OUTLINE_BUTTON}`}
         >
           {copied ? <Check data-icon="inline-start" aria-hidden="true" /> : <Copy data-icon="inline-start" aria-hidden="true" />}
           <span aria-live="polite">{copied ? "Copied" : "Copy letter"}</span>

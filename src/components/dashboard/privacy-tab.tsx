@@ -76,22 +76,29 @@ export function PrivacyTab() {
               const s = requestStatus(e);
               const passed = e.leaseContentCheck === "passed";
               return (
-                <li key={e.id} className="rounded-md border p-3">
-                  <div className="flex flex-wrap justify-between gap-2 text-sm">
-                    <span className="font-semibold">
-                      POST {e.endpoint} <span className="font-mono font-normal text-muted-foreground">{time(e.at)}</span>
-                    </span>
-                    <span className={cn("text-[0.8125rem] font-semibold", s.className)}>{s.text}</span>
-                  </div>
-                  <pre className="my-2 rounded-md bg-foreground p-2.5 font-mono text-[0.8125rem] break-words whitespace-pre-wrap text-background">
-                    {e.body}
-                  </pre>
-                  <p className={cn("text-sm font-semibold", passed ? "text-success" : "text-destructive")}>
-                    Privacy guard: {passed ? "passed, no lease text, names or addresses" : "blocked, this request was never sent"}
-                  </p>
-                  <p className="mt-0.5 text-[0.8125rem] text-muted-foreground">
-                    {e.bytes} bytes. {passed && e.researchStatus !== "unconfigured" ? `Forwarded as a topic search to ${e.forwardedTo}.` : ""}
-                  </p>
+                <li key={e.id} className="rounded-md border border-dashed border-input">
+                  <dl className="grid text-sm sm:grid-cols-[8.5rem_1fr]">
+                    <dt className="px-3 pt-2.5 font-semibold text-muted-foreground sm:py-2.5">Sent to</dt>
+                    <dd className="min-w-0 px-3 pb-2.5 sm:py-2.5">
+                      <span className="font-semibold">POST {e.endpoint}</span>{" "}
+                      <span className="font-mono text-muted-foreground">{time(e.at)}</span>
+                      <span className={cn("mt-0.5 block text-[0.8125rem] font-semibold", s.className)}>{s.text}</span>
+                      {passed && e.researchStatus !== "unconfigured" && (
+                        <span className="mt-0.5 block text-[0.8125rem] text-muted-foreground">Forwarded as a topic search to {e.forwardedTo}.</span>
+                      )}
+                    </dd>
+                    <dt className="border-t border-dashed border-input px-3 pt-2.5 font-semibold text-muted-foreground sm:py-2.5">What was sent</dt>
+                    <dd className="min-w-0 px-3 pb-2.5 sm:border-t sm:border-dashed sm:border-input sm:py-2.5">
+                      <pre className="rounded-sm bg-foreground px-2.5 py-2 font-mono text-[0.8125rem] break-words whitespace-pre-wrap text-background">
+                        {e.body}
+                      </pre>
+                      <span className="mt-1 block font-mono text-xs text-muted-foreground">{e.bytes} bytes</span>
+                    </dd>
+                    <dt className="border-t border-dashed border-input px-3 pt-2.5 font-semibold text-muted-foreground sm:py-2.5">Privacy guard</dt>
+                    <dd className={cn("px-3 pb-2.5 font-semibold sm:border-t sm:border-dashed sm:border-input sm:py-2.5", passed ? "text-success" : "text-destructive")}>
+                      {passed ? "Lease text included: 0 bytes" : "Blocked, this request was never sent"}
+                    </dd>
+                  </dl>
                 </li>
               );
             })}
