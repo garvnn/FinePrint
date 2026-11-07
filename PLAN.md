@@ -34,7 +34,7 @@ Deposit > one month's rent · last month's rent > rent · upfront fees beyond fi
 
 ## Testing
 
-- [x] 88 Vitest unit tests: money parsing, segmentation, extraction (rent, deposit, multiple values, missing amounts, ambiguous fees, relative amounts), costs (upfront, annual, refundable vs non-refundable, termination, overrides), research API (rejects lease text, unknown topics, extra fields, oversize, content type; unconfigured, timeout, no results, HTTP error, network failure, ranking, contradictory sources), privacy (guard, audit, architecture invariants), verification, both sample PDFs end to end, PDF edge cases, report/letter
+- [x] 90 Vitest unit tests: money parsing, segmentation, extraction (rent, deposit, multiple values, missing amounts, ambiguous fees, relative amounts), costs (upfront, annual, refundable vs non-refundable, termination, overrides), research API (rejects lease text, unknown topics, extra fields, oversize, content type; unconfigured, timeout, no results, HTTP error, network failure, ranking, contradictory sources, proposed-bill and search-page exclusion, URL dedupe), privacy (guard, audit, architecture invariants), verification, both sample PDFs end to end, PDF edge cases, report/letter
 - [x] 9 Playwright smoke tests against the production build: landing, demo mode, live-mode fallback with payload inspection, upload sends nothing, invalid/scanned errors, corrections, report, mobile overflow, API rejection
 - [x] `tsc --noEmit`, ESLint, `next build` all clean
 
@@ -53,5 +53,6 @@ Deposit > one month's rent · last month's rent > rent · upfront fees beyond fi
 - Rate limit and research cache are per server instance (best-effort on serverless).
 - Highlighting covers whole text lines containing the cited sentence, not individual words.
 - Corroboration is phrase matching against source text. It indicates relevance, not a legal conclusion.
-- The live Tavily path has been verified against Tavily's documented API shape and with mocked responses in tests. It has not run against the real API in this environment because no key was available.
+- Live Tavily research was verified end to end on 2026-11-07 with a real key: all 8 topics returned official MA sources. 7 topics corroborate their findings; automatic renewal found no supporting source and is correctly downgraded to "Needs review". Proposed bills and search-result pages are excluded, and case-variant duplicate URLs are merged.
+- Phrase-match corroboration is loose: a statute section can "support" a topic because it mentions the phrases (e.g. § 15F mentions attorney's fees).
 - In `next dev` (React Strict Mode) the audit log can show a duplicated research request because effects run twice; production builds do not.

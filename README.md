@@ -48,7 +48,7 @@ No variable is exposed to the browser (nothing is prefixed `NEXT_PUBLIC_`).
 | `npm run build` / `npm start` | Production build / server |
 | `npm run typecheck` | `tsc --noEmit` (strict) |
 | `npm run lint` | ESLint (Next.js core-web-vitals + TypeScript) |
-| `npm test` | Vitest unit tests (88 tests) |
+| `npm test` | Vitest unit tests (90 tests; no network, independent of `TAVILY_API_KEY`) |
 | `npm run test:e2e` | Playwright smoke tests against the production build (run `npm run build` first; needs `npx playwright install chromium`, or set `PLAYWRIGHT_CHANNEL=chrome` to use installed Chrome) |
 | `npm run samples` | Regenerate the fictional sample PDFs and edge-case test PDFs |
 | `npm run check` | typecheck + lint + unit tests + build |
@@ -74,8 +74,8 @@ Details: [ARCHITECTURE.md](ARCHITECTURE.md). Design system and swapping the UI: 
 ```
 src/
   app/                 routes: / (landing), /analyze (app), /api/research (only server route)
-  components/          UI only: ui/ (shadcn), landing/, upload/, lease/, findings/, financial/,
-                       privacy/, report/, analyze/, layout/
+  components/          UI only: ui/ (shadcn), landing/, layout/, upload/, dashboard/,
+                       findings/labels.ts
   hooks/               use-lease-session (controller), use-audit
   lib/
     pdf/               PDF.js loading + pure text-layout builder

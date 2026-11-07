@@ -106,7 +106,7 @@ Allowed `topicId` values (`src/lib/research/topics.ts`):
 ## Research → findings (keeping retrieval separate from conclusions)
 
 1. **Rules** produce findings from lease facts alone, for example "deposit $2,700 > rent $1,800, excess $900". Each finding names the topic(s) it depends on and starts with `verification.status = "pending"`.
-2. **Retrieval** returns sources. Ranking does not trust result order: official domains come first, then phrase-match strength, then Tavily's score.
+2. **Retrieval** returns sources. Proposed bills (`malegislature.gov/Bills/…`) and search-result pages are dropped, and case-variant duplicate URLs are merged. Ranking does not trust result order: official domains first (statutes > regulations > guidance), then phrase-match strength, then Tavily's score.
 3. **Verification** (`lib/analysis/verify.ts`) is deterministic. Each topic defines corroboration phrase groups, for example *security deposit* AND *first month's rent*.
    - At least one official source matches every group → `corroborated`; priority is kept and the matching source is cited.
    - Sources exist but none official matches → `not_corroborated`; priority drops one level and the finding is relabeled "Needs review".

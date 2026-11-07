@@ -27,7 +27,7 @@ All colors, radii, shadows and layout constants live in **`src/styles/theme.css`
 | `--shadow-card`, `--shadow-raised` | `shadow-card`, `shadow-raised` | Elevation |
 | `--container-max`, `--header-height` | `max-w-page`, `h-(--header-height)` | Layout |
 
-Typography: Geist Sans / Geist Mono via `next/font` (self-hosted at build time, no runtime Google requests). To change fonts, swap the imports in `src/app/layout.tsx` and keep the variable names `--font-geist-sans` / `--font-geist-mono`, or rename them in `globals.css`.
+Typography: Public Sans (UI), Source Serif 4 (lease text, headings, report title) and Geist Mono via `next/font` (self-hosted at build time, no runtime Google requests). To change fonts, swap the imports in `src/app/layout.tsx` and keep the variable names `--font-geist-sans` / `--font-serif` / `--font-geist-mono`, or rename them in `globals.css`.
 
 ### Change the theme
 
@@ -42,15 +42,11 @@ Component variants (button sizes and styles, badges, tabs) are defined with `cla
 | Folder | Components | Data in |
 | --- | --- | --- |
 | `components/ui` | shadcn/ui (Radix) primitives: Button, Card, Tabs, Badge, Input, Switch, … | props |
-| `components/layout` | `SiteHeader`, `SiteFooter`, `Logo` | none |
-| `components/landing` | `Hero`, `Benefits`, `HowItWorks`, `PrivacySection`, `RentersSection`, `FinalCta` | none |
-| `components/upload` | `UploadPanel` | callbacks `onFile`, `onSample` |
-| `components/lease` | `PdfViewer` (canvas + highlight overlay), `TextViewer` (fixture fallback) | `LeaseDocument`, `PDFDocumentProxy`, `HighlightTarget` |
-| `components/findings` | `FindingsList`, `FindingCard`, `SourceItem`, badges | `LeaseFinding[]` |
-| `components/financial` | `SummaryStrip`, `CostBreakdown` (incl. corrections form) | `FinancialSummary` |
-| `components/privacy` | `PrivacyAudit` | audit store (`useAuditEvents`) |
-| `components/report` | `ReportView` (report + landlord letter) | `AnalysisResult`, `LeaseFinding[]` |
-| `components/analyze` | `AnalyzeApp` (page shell + dashboard layout), `OverviewPanel` | `useLeaseSession()` |
+| `components/layout` | `SiteHeader`, `SiteFooter`, `Logo` (landing page chrome) | none |
+| `components/landing` | `Hero`, `Benefits`, `HowItWorks`, `PrivacySection`, `WhoItsFor` | none |
+| `components/upload` | `UploadScreen` (idle, loading and error states) | `useLeaseSession()` state and callbacks |
+| `components/dashboard` | `DashboardApp` (shell + tabs), `AppHeader`/`AppFooter`, `SummaryStrip`, `ResearchBanner`, `LeaseViewer` (PDF canvas + highlighter marks), `OverviewTab`, `FindingsTab`, `FindingCard`, `CostsTab` (incl. corrections), `PrivacyTab`, `ReportTab` (report + landlord letter); shared pills and panels in `bits.tsx` | `useLeaseSession()`, `LeaseFinding[]`, `FinancialSummary`, audit store |
+| `components/findings` | `labels.ts` only: display strings and priority colours | n/a |
 
 **Rule:** a component never imports from `lib/analysis/rules`, `lib/costs` or `lib/research/server`. It receives computed objects. (`labels.ts` holds display strings only.)
 
@@ -75,7 +71,7 @@ To build a new dashboard, create `src/components/my-dashboard.tsx`, call `useLea
 ## Replacing page layouts
 
 - Landing: `src/app/page.tsx` composes section components. Replace or reorder them freely; none of them hold state.
-- App: `src/app/analyze/page.tsx` renders `<AnalyzeApp/>` inside `<Suspense>` (required because it reads `useSearchParams`). Keep the Suspense wrapper if your layout reads URL params.
+- App: `src/app/analyze/page.tsx` renders `<DashboardApp/>` inside `<Suspense>` (required because it reads `useSearchParams`). Keep the Suspense wrapper if your layout reads URL params.
 
 ## Importing shadcn components
 

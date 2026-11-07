@@ -45,7 +45,7 @@ Optionally open **Early termination fee: $3,600**: "the lease says paying it doe
 | Known first-year cost | $22,505 = $21,600 rent + $480 amenity fees + $425 one-time fees |
 | Conditional | $75 late fee (after 5 days); $3,600 early-termination fee (in addition to rent until re-rented) |
 | Findings | 15 total: **3 high** (deposit over one month's rent; $350 upfront fee; early-termination fee that doesn't release you), **6 medium** (late fee after 5 days; tenant pays water/sewer; shared utility allocation; broad repair duties; auto-renewal with 90-day notice; liability waiver), **3 low** (key fee, attorney's fees, $40/mo amenity fee), **3 info** (rent, 60-day notice, joint and several liability) |
-| Legal verification | Bundled or live sources corroborate every research-backed finding except auto-renewal (no bundled reference; needs live search) |
+| Legal verification | Live (checked 2026-11-07): official MA sources support every research-backed finding except auto-renewal, which no source supported, so it drops from medium to low and shows "Needs review" (a good moment to show research changing a finding). Bundled mode: same, except auto-renewal shows "verification unavailable". |
 
 **Sample B (cleaner)**: $2,100 rent, $6,350 due at signing, deposit equals one month, late fee only after 30 days, landlord handles repairs and heat/water. **No high or medium findings.** Good for a "compare" moment.
 
