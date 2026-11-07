@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { AnalyzeApp } from "@/components/analyze/analyze-app";
+import { DashboardApp } from "@/components/dashboard/dashboard-app";
 
 export const metadata: Metadata = {
   title: "Analyze a lease — FinePrint",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function AnalyzePage() {
   return (
     <Suspense fallback={<div className="p-8 text-center text-sm text-muted-foreground">Loading…</div>}>
-      <AnalyzeApp />
+      <DashboardApp />
     </Suspense>
   );
 }
